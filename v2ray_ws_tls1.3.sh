@@ -158,12 +158,13 @@ http {
 }
 EOF
     curl https://get.acme.sh | sh
-    ~/.acme.sh/acme.sh  --register-account  -m myxxr@gmail.com --server zerossl
+    newpath=$(cat /dev/urandom | head -1 | md5sum | head -c 4)
+    ~/.acme.sh/acme.sh  --register-account  -m myws$newpath@gmail.com --server zerossl
     ~/.acme.sh/acme.sh  --issue  -d $your_domain  --standalone
     ~/.acme.sh/acme.sh  --installcert  -d  $your_domain   \
         --key-file   /etc/nginx/ssl/$your_domain.key \
         --fullchain-file /etc/nginx/ssl/fullchain.cer
-    newpath=$(cat /dev/urandom | head -1 | md5sum | head -c 4)
+    
 cat > /etc/nginx/conf.d/default.conf<<-EOF
 server { 
     listen       80;
